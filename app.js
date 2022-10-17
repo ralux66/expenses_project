@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var cors = require('cors')
 //var indexRouter = require("./routes/index");
 //var usersRouter = require("./routes/users");
 var mailRouter = require("./routes/mail.router.js");
@@ -12,9 +13,11 @@ var morgan = require("morgan");
 var sequelize = require("./db/managentdb.js");
 
 // view engine setup
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -40,7 +43,7 @@ app.use(async function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
-  await sequelize.sync({ force: false });
+  await sequelize.sync({ force: true });
 });
 
 module.exports = app;
